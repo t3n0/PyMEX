@@ -23,6 +23,17 @@ materials accurately at a fraction of the conventional GW-BSE
 approach.
 
 ## Installation
+
+Requires:
+- wannier90
+- siesta
+- numpy
+- scipy
+- matplolib
+- cython? (maybe not, if we distribute the .c files)
+- mpi?
+- h5py
+
 Tested on python3.8, 3.9, 3.11.
 Requires  
  + numpy
