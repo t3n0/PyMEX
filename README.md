@@ -55,6 +55,7 @@ questions or have found any bugs.
 ## Contributing
 
 ## Authors and acknowledgment
+
 Written and maintanied by Indrajit Maity. If you use this
 package/part of the source-code you should cite the following
 papers for which this code was developed:
