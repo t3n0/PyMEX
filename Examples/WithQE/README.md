@@ -1,20 +1,24 @@
+# Usage of PyMEX with Quantum Espresso
+
 **Author: Indrajit Maity  
-Email: indrajit.maity02@gmail.com**
+Email: <indrajit.maity02@gmail.com>**
 
-Example to solve the BSE with PyMEX for a relatively coarse grid  
+Example to solve the BSE with PyMEX for a relatively coarse grid.  
 NOTE: The spin-orbit coupling is included in the electronic
-      structure calculations explicitly. This is a non-perutbative
-      calculation. For a perturbative treatment, see the example 
-      [WithSiesta](../WithSiesta).
+structure calculations explicitly. This is a non-perutbative
+calculation. For a perturbative treatment, see the example
+[WithSiesta](../WithSiesta).
 
-      YOU MUST change the number of orbital within the
-      `wan90tobse.py` to 10 for W and 6 for Se. Will be automated
-      in the future! 
+YOU MUST change the number of orbital within the
+`wan90tobse.py` to 10 for W and 6 for Se. Will be automated
+in the future!
 
 ## Steps for the calculations
-### WANNIERIZE (5 Steps)
 
-1. Run Wannier90 to create the k-grid within the [WANNIERIZE](./WANNIERIZE) 
+
+1. 
+
+1. Run Wannier90 to create the k-grid within the [WANNIERIZE](./WANNIERIZE)
 folder;
  
 *cd WANNIERIZE*  

@@ -7,7 +7,8 @@ import os
 extensions = [Extension(
                 "cyfunc",
                 sources=["cyfunc.pyx"],
-                extra_compile_args=["-fopenmp", "-Wunreachable-code-fallthrough","-Wno-unreachable-code"],
+                #extra_compile_args=["-fopenmp", "-Wunreachable-code-fallthrough","-Wno-unreachable-code"],
+                extra_compile_args=["-fopenmp", "-Wno-unreachable-code"],
                 extra_link_args=["-fopenmp"]
             )]
 
