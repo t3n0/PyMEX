@@ -15,8 +15,26 @@ in the future!
 
 ## Steps for the calculations
 
+Input file description:
 
-1. 
+1. wannier90 input file (link)
+2. QE input file (link)
+
+Workflow:
+
+1. Run wannier preprocessing tool `wannier90.x -pp`
+
+```
+mpirun -n 4 wannier90.x -pp WSe2
+```
+
+2. Run the QE workflow
+
+```
+mpirun -n 4 pw.x -in scf.in >> scf.out
+mpirun -n 4 pw.x -in nscf.in >> nscf.out
+mpirun -n 4 bands.x -in bands.in >> bands.out
+```
 
 1. Run Wannier90 to create the k-grid within the [WANNIERIZE](./WANNIERIZE)
 folder;
@@ -39,14 +57,14 @@ You will find `WSe2.nnkp` and other files as output.
 If you are not familiar with WANNIER90 input, please take a look 
 and make sure it makes sense. At this stage make sure the 
 following lines are commented out (i.e., the use of `!`):
-`
+```
 !restart = default
 !bands_plot = true
 !write_u_matrices = .true
 !write_hr = .true
 !wannier_plot = .true.
 !wannier_plot_supercell = 3
-`
+```
 
 3. Quantum ESPRESSO (QE) calculations for generating inputs of
 Wannier90; 
@@ -68,12 +86,12 @@ we are using 9x9x1 k-grid for the SCF calculations.
 
 5. Wannier90 data to necessary files; Before you run `wannier90.x`
 executable please uncomment the following lines in `WSe2.win`:
-`
+```
 restart = default
 bands_plot = true
 write_u_matrices = .true
 write_hr = .true
-`
+```
 
 *PATH-2-WAN90/wannier90.x WSe2*
 
