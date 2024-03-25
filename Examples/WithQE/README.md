@@ -13,7 +13,6 @@ YOU MUST change the number of orbital within the
 `wan90tobse.py` to 10 for W and 6 for Se. Will be automated
 in the future!
 
-## Steps for the calculations
 
 Input file description:
 
@@ -24,17 +23,22 @@ Workflow:
 
 1. Run wannier preprocessing tool `wannier90.x -pp`
 
-```
-mpirun -n 4 wannier90.x -pp WSe2
-```
+   ```
+   mpirun -n 4 wannier90.x -pp WSe2
+   ```
+
+   This generates the `WSe2.nnkp`.
 
 2. Run the QE workflow
 
-```
-mpirun -n 4 pw.x -in scf.in >> scf.out
-mpirun -n 4 pw.x -in nscf.in >> nscf.out
-mpirun -n 4 bands.x -in bands.in >> bands.out
-```
+   ```
+   mpirun -n 4 pw.x -in scf.in >> scf.out
+   mpirun -n 4 pw.x -in nscf.in >> nscf.out
+   mpirun -n 4 bands.x -in bands.in >> bands.out
+   ```
+
+   We obtain the DFT ground state and the desired number bands for the wannierization.  
+   Also, the `nscf` calculation must be performed with `nosym=true`: we need to input all the kpoint explicitly.
 
 1. Run Wannier90 to create the k-grid within the [WANNIERIZE](./WANNIERIZE)
 folder;

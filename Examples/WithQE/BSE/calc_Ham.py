@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/work/e05/e05/imaity/codes/pymex/src")
+sys.path.append("/home/tentacolo/Documents/Physics/Projects/PyMEX/src")
 from bse import BSE
 import time
 from functools import partial

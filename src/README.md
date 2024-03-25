@@ -1,5 +1,5 @@
-# PyMEX: Python package for Moiré EXciton calculations
-------------------------------------------------------
+# PyMEX: Python package for Moiré EXciton
+
 
 ## Files
 1. pymex.inp: Input file 

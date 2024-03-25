@@ -46,7 +46,7 @@ Written and maintanied by Indrajit Maity. If you use this
 package/part of the source-code you should cite the following
 papers for which this code was developed:
 
-*Twist angle dependent intralayer and interlayer excitons of WS2/WSe2 heterobilayer*, arXiv. 
+*Twist angle dependent intralayer and interlayer excitons of WS2/WSe2 heterobilayer*, arXiv.
 
 ## Project status
 

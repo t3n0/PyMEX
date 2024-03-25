@@ -184,7 +184,7 @@ class WAN2BSE(object):
     # Initialize
     A = np.zeros((3, 3), dtype=float) 
     for i in range(len(lines)):
-      if "Begin Unit_Cell_Cart" in lines[i]:
+      if "begin unit_cell_cart" in lines[i]:
         if "bohr" in lines[i+1].casefold():
           for j in range(i+2, i+2+3):
             for k in range(3):
