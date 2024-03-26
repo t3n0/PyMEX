@@ -11,28 +11,10 @@ The software package is developed using mpi4py, numpy, scipy, cython and librari
 This package helps you to compute moiré excitons with Wannier functions as basis.
 You can also compute the excitons of 2D materials accurately at a fraction of the conventional GW-BSE approach.
 
-## Installation
+## Documentation
 
-Requires:
-
-- wannier90
-- siesta
-- numpy
-- scipy
-- matplolib
-- cython? (maybe not, if we distribute the .c files)
-- mpi?
-- h5py
-
-Tested on python3.8, 3.9, 3.11.
-Requires:
-
-- numpy
-- scipy
-- matplotlib (optional)
-- cython
-- mpi4py
-- h5py-parallel
+- [Installation](installation.md)
+- [Tutorials](tutorial.md)
 
 ## Support
 

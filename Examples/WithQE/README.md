@@ -21,15 +21,8 @@ Input file description:
 
 Workflow:
 
-1. Run wannier preprocessing tool `wannier90.x -pp`
 
-   ```
-   mpirun -n 4 wannier90.x -pp WSe2
-   ```
-
-   This generates the `WSe2.nnkp`.
-
-2. Run the QE workflow
+1. Run the QE workflow
 
    ```
    mpirun -n 4 pw.x -in scf.in >> scf.out
@@ -40,101 +33,45 @@ Workflow:
    We obtain the DFT ground state and the desired number bands for the wannierization.  
    Also, the `nscf` calculation must be performed with `nosym=true`: we need to input all the kpoint explicitly.
 
-1. Run Wannier90 to create the k-grid within the [WANNIERIZE](./WANNIERIZE)
-folder;
- 
-*cd WANNIERIZE*  
-*PATH-2-WAN90/utility/kmesh.pl 9 9 1 >> kpoints_qe*
-*PATH-2-WAN90/utility/kmesh.pl 9 9 1 wannier >> kpoints_wannier*
+2. Run wannier preprocessing tool `wannier90.x -pp`
 
-You will find 81 kpoints written in `kpoints_wannier` and
-`kpoints_qe` file. We will utilize these k-points in all out future
-calculations.
+   ```
+   mpirun -n 4 wannier90.x -pp WSe2
+   ```
 
+   This generates the `WSe2.nnkp`.
 
-2. Run Wannier90 to generate the `WSe2.nnkp` file; 
+3. Run the interface code 
+   ```
+   mpirun -n 4 pw2wannier90.x -in WSe2.pw2wan >& pw2wan.out
+   ```
 
-*PATH-2-WAN90/wannier90.x -pp WSe2*
+4. Run a one-shot projection calculation with `num_iter = 0`
+   ```
+   mpirun -n 4 wannier90.x -in WSe2
+   ```
 
-You will find `WSe2.nnkp` and other files as output. 
+5. (optional) Re-run wannier90 with the option `restart = [default | wannierise | plot]` if you need to compute some other quantities or plots
+   ```
+   mpirun -n 4 wannier90.x -in WSe2
+   ```
 
-If you are not familiar with WANNIER90 input, please take a look 
-and make sure it makes sense. At this stage make sure the 
-following lines are commented out (i.e., the use of `!`):
+6. Run `PyMEX` to construct the hamiltonian and to perform the absorption calculation
+   ```
+   mpirun -n 4 python calc_Ham.py >& ham.out
+   mpirun -n 4 python calc_Absorb.py >& abs.out
+   ```
+
+Note1: use the `kmesh.pl` tool in the wannier folder to generate the explicit list of kpoints needed by the nscf and wannier itself.
 ```
-!restart = default
-!bands_plot = true
-!write_u_matrices = .true
-!write_hr = .true
-!wannier_plot = .true.
-!wannier_plot_supercell = 3
-```
-
-3. Quantum ESPRESSO (QE) calculations for generating inputs of
-Wannier90; 
-
-*PATH-2-QE/pw.x -pd .true. -nk 3 -in WSe2.scf >& scf.out*  
-*PATH-2-QE/pw.x -pd .true. -nk 3 -in WSe2.nscf >& nscf.out*  
-*PATH-2-QE/bands.x -pd .true. -in bands.in*  
-*PATH-2-QE/pw2wannier90.x -pd .true. -in WSe2.pw2wan >& pw2wan.out*  
-
-QE calculations with inputs required for Wannier90. Please 
-take a look and familiarize yourself with the input and the 
-keywords required to generate the Wannier90 input. Also, 
-we are using 9x9x1 k-grid for the SCF calculations. 
-
-
-4. Wannier90 one-shot projections;
-
-*PATH-2-WAN90/wannier90.x WSe2*
-
-5. Wannier90 data to necessary files; Before you run `wannier90.x`
-executable please uncomment the following lines in `WSe2.win`:
-```
-restart = default
-bands_plot = true
-write_u_matrices = .true
-write_hr = .true
+./kmesh 4 4 1 >> kpoints
 ```
 
-*PATH-2-WAN90/wannier90.x WSe2*
+Note2: it might be worth to use the `-pd .true.` and `-nk <k>` parallelisation flags in certain situations.
+```
+mpirun -n 4 pw.x -pd .true. -nk 3 -in scf.in > scf.out
+mpirun -n 4 bands.x -pd .true. -in bands.in > bands.out
+mpirun -n 4 pw2wannier90.x -pd .true. -in WSe2.pw2wan >& pw2wan.out
+```
 
-### Bethe-Salpeter-Equation (3 steps) 
-
-6. Copy the necessary files to [BSE](./BSE) folder and create the 
-BSE Hamiltonian and diagonalize; 
-
-*cd ../BSE*  
-*ln -s ../WANNIERIZE/WSe2_u.mat ./*  
-*ln -s ../WANNIERIZE/WSe2_hr.dat ./*  
-*ln -s ../WANNIERIZE/WSe2_wsvec.dat ./*  
-*ln -s ../WANNIERIZE/WSe2.win ./*  
-*ln -s ../WANNIERIZE/WSe2.wout ./*  
-*ln -s ../WANNIERIZE/Bands_QE ./*  
-*python3 PATH-2-PYMEX-SRC/setup.py build_ext --inplace*  
-*export PATH=${PYMEXSRC}/build:$PATH*  
-*mpirun -np numprocess python3 calc_Ham.py >& bse_out*
-
-The lines above creates soft links for required files, 
-complies the source codes (for cythonized part), and 
-runs the BSE Hamiltonian construction. 
-**NOTE:** Ideally, the numprocess can be anything <= 
-Numberofkpoints x NumberofValencebands x NumberofCondbands; 
-In this case, it is= 9 x 9 x 2 x 2 = 324. 
-However, we found the h5py-parallel works only for a integer 
-divisor of Numberofkpoints x Numberofbands. Therefore,
-the numprocess here can be 1, 2, 3, 4, 6, etc. upto 324. 
-However, if you enter 5 as numprocess the code will throw
-an error! 
-
-
-7. Perform the optical conductivity calculations. 
-
-*python3 PATH-2-PYMEX-SRC/setup.py build_ext --inplace*  
-*export PATH=${PYMEXSRC}/build:$PATH*  
-*mpirun -np numprocess python3 calc_Absorb.py >& bse_out*  
-
-
-All Done!! You can now analyze the data and do cool things with 
-it :)
-
+Note3: Ideally, the numprocess can be anything <= Numberofkpoints x NumberofValencebands x NumberofCondbands; In this case, it is= 9 x 9 x 2 x 2 = 324. However, we found the h5py-parallel works only for a integer divisor of Numberofkpoints x Numberofbands. Therefore, the numprocess here can be 1, 2, 3, 4, 6, etc. upto 324. However, if you enter 5 as numprocess the code will throw an error!
