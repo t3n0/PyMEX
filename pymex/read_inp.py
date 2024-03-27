@@ -1,18 +1,10 @@
 #!/usr/bin/python
 
-
-import sys,string
-import numpy as np
+from config import *
 from datetime import datetime
-from functools import partial
-print_f = partial(print, flush=True)
+import numpy as np
+import sys
 
-#MPI
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-size = comm.Get_size()
-rank = comm.Get_rank()
-root = 0
 
 
 def read_inp(filename):

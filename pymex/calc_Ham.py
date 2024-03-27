@@ -1,16 +1,7 @@
-import sys
-sys.path.append("/home/tentacolo/Documents/Physics/Projects/PyMEX/src")
+from config import *
 from bse import BSE
 import time
-from functools import partial
-print_f = partial(print, flush=True)
-import numpy as np
 
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-size = comm.Get_size()
-rank = comm.Get_rank()
-root = 0
 
 #------------
 # Calculations

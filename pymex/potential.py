@@ -6,11 +6,11 @@
 import numpy as np
 import sys, scipy, time
 from scipy import special
-from constants import *
-from functools import partial
+from config import *
+
 from wan90tobse import *
 from generic_func import *
-print_f = partial(print, flush=True)
+
 
 #=========================|
 # Potential ( multilayer )|

@@ -6,21 +6,19 @@
 # To DO 
 # + Add the option to always save data files 
 
-import numpy as np
-import sys
+from config import *
 from generic_func import *
 from read_inp import *
-from constants import *
-from functools import partial
-print_f = partial(print, flush=True)
+
 from cyfunc import grad_Hk_opt, grad_Hk_gamma
 
-#MPI
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-size = comm.Get_size()
-rank = comm.Get_rank()
-root = 0
+import numpy as np
+
+import sys
+
+
+
+
 
 #|=========================|
 #| WANNIER902BSE conversion|

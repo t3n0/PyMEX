@@ -3,18 +3,10 @@
 #Author: Indrajit Maity       |
 #-----------------------------|
 
+from config import *
 import numpy as np
-import sys
-from functools import partial
 from dft2bse import *
-print_f = partial(print, flush=True)
 import h5py
-
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-size = comm.Get_size()
-rank = comm.Get_rank()
-root = 0
 
 # |=====================================|
 # |Class to Add Spin-Orbit-Coupling (SOC)|

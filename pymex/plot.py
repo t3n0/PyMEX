@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from dft2bse import *
 import h5py
-from dft2bse import *
 
 
 # SOC as a perturbation

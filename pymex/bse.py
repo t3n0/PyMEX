@@ -3,25 +3,19 @@
 #Author: Indrajit Maity       |
 #-----------------------------|
 
-
-import numpy as np
-import os, sys
+from config import *
 from wan90tobse import *
-import time
 from read_inp import *
 from potential import *
 from dft2bse import *
-from functools import partial
 from addsoc import * 
-print_f = partial(print, flush=True)
-import h5py
 from cyfunc import *
 
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-size = comm.Get_size()
-rank = comm.Get_rank()
-root = 0
+import numpy as np
+
+import sys
+import time
+import h5py
 
 
 
